@@ -1,19 +1,32 @@
 package com.upgrade.challenge.reservation.domain;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * Created by fernando on 09/02/19.
  */
 @Entity
+@Validated
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotEmpty(message = "Email cannot be null.")
+    @Email(message = "Email should be valid.")
     private String email;
+
+    @NotEmpty(message = "Name cannot be null.")
     private String firstName;
+
+    @NotEmpty(message = "Last name cannot be null")
     private String lastName;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_id", referencedColumnName = "id")
     private Reservation reservation;

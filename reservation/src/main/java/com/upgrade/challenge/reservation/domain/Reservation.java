@@ -1,69 +1,62 @@
 package com.upgrade.challenge.reservation.domain;
 
+import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
+import com.upgrade.challenge.reservation.validation.ReservationConstraint;
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Created by fernando on 09/02/19.
  */
 @Entity
+@Validated
+@ReservationConstraint(
+        startDate = "startDate",
+        endDate = "endDate",
+        message = "Date range is invalid!"
+)
 public class Reservation {
-
-    enum Constraints {
-        COST(0),
-        MAX_DAYS_TO_RESERVE(3),
-        MIN_DAYS_TO_DO_RESERVATION(1),
-        MAX_DAYS_TO_DO_RESERVATION(30),
-        CHECK_IN_HOUR(12),
-        CHECK_OUT_HOUR(12);
-
-        private int units;
-
-        Constraints(int units) {
-            this.units = units;
-        }
-
-        public int getUnits() {
-            return units;
-        }
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    private Date fromDate;
-    private Date toDate;
-    private int hour;
-    @OneToOne(mappedBy = "reservation")
+
+    @Column(unique = true)
+    @DatePatternConstraint
+    private String startDate;
+
+    @Column(unique = true)
+    @DatePatternConstraint
+    private String endDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getToDate() {
-        return toDate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public User getUser() {
