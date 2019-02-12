@@ -7,11 +7,12 @@ import org.slf4j.LoggerFactory;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by fernando on 10/02/19.
  */
-public class DateValidator implements ConstraintValidator<DatePatternConstraint, String> {
+public class DateValidator implements ConstraintValidator<DatePatternConstraint, Date> {
 
     private final static Logger LOG = LoggerFactory.getLogger(DateValidator.class);
     private final static String WARN_MESSAGE = "Cannot parse the given date: ";
@@ -23,10 +24,10 @@ public class DateValidator implements ConstraintValidator<DatePatternConstraint,
     }
 
     @Override
-    public boolean isValid(String date, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Date date, ConstraintValidatorContext constraintValidatorContext) {
         boolean valid = false;
         try {
-            DATE_FORMAT.parse(date);
+            DATE_FORMAT.format(date);
             valid = true;
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE + date, e);

@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 /**
  * Created by fernando on 09/02/19.
@@ -27,9 +28,9 @@ public class User {
     @NotEmpty(message = "Last name cannot be null")
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
-    private Reservation reservation;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "reservations_id")
+    private Set<Reservation> reservations;
 
     public String getEmail() {
         return email;
@@ -55,11 +56,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Reservation getReservation() {
-        return reservation;
+    public Set<Reservation> getReservations() {
+        return reservations;
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

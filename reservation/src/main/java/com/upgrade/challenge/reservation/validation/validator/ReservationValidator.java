@@ -9,6 +9,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 
 /**
  * Created by fernando on 11/02/19.
@@ -30,25 +31,28 @@ public class ReservationValidator implements ConstraintValidator<ReservationCons
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
         return isAllowedToReserve(
-                (String) new BeanWrapperImpl(value).getPropertyValue(startDate),
-                (String) new BeanWrapperImpl(value).getPropertyValue(endDate)
+                (Date) new BeanWrapperImpl(value).getPropertyValue(startDate),
+                (Date) new BeanWrapperImpl(value).getPropertyValue(endDate)
         );
     }
 
-    private boolean isAllowedToReserve(String date1, String date2) {
+    private boolean isAllowedToReserve(Date date1, Date date2) {
         int days = -1;
+        String d1 = DateValidator.DATE_FORMAT.format(date1);
         try {
-            days = Period.between(LocalDate.now(), LocalDate.parse(date1)).getDays();
+            days = Period.between(LocalDate.now(), LocalDate.parse(d1)).getDays();
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE, e);
         }
         return (days>=1 && days<=30) && isValidRange(date1, date2);
     }
 
-    private boolean isValidRange(String date1, String date2) {
+    private boolean isValidRange(Date date1, Date date2) {
         int days = -1;
+        String d1 = DateValidator.DATE_FORMAT.format(date1);
+        String d2 = DateValidator.DATE_FORMAT.format(date2);
         try {
-            days = Period.between(LocalDate.parse(date1), LocalDate.parse(date2)).getDays();
+            days = Period.between(LocalDate.parse(d1), LocalDate.parse(d2)).getDays();
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE, e);
         }

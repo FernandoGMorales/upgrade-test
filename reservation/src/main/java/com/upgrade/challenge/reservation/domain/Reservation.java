@@ -32,10 +32,6 @@ public class Reservation {
     @DatePatternConstraint
     private Date endDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -58,13 +54,5 @@ public class Reservation {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
