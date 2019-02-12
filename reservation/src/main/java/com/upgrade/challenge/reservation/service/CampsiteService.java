@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface CampsiteService {
 
-    List<?> rangesAvailable(String startDate, String endDate);
+    List<?> findByRange(String date1, String date2);
 
 }

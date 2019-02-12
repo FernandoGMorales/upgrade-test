@@ -5,6 +5,7 @@ import com.upgrade.challenge.reservation.validation.ReservationConstraint;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by fernando on 09/02/19.
@@ -25,11 +26,11 @@ public class Reservation {
 
     @Column(unique = true)
     @DatePatternConstraint
-    private String startDate;
+    private Date startDate;
 
     @Column(unique = true)
     @DatePatternConstraint
-    private String endDate;
+    private Date endDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -43,19 +44,19 @@ public class Reservation {
         return id;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

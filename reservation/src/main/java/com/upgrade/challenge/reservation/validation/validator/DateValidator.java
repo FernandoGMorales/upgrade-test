@@ -15,7 +15,7 @@ public class DateValidator implements ConstraintValidator<DatePatternConstraint,
 
     private final static Logger LOG = LoggerFactory.getLogger(DateValidator.class);
     private final static String WARN_MESSAGE = "Cannot parse the given date: ";
-    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DatePatternConstraint.DATE_PATTERN);
+    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DatePatternConstraint.DATE_PATTERN);
 
     @Override
     public void initialize(DatePatternConstraint constraintAnnotation) {
