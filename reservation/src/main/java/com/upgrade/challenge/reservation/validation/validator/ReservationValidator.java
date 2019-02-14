@@ -44,7 +44,11 @@ public class ReservationValidator implements ConstraintValidator<ReservationCons
     private boolean isAllowedToReserve(Date date1, Date date2) {
         int days = -1;
         try {
-            days = Period.between(LocalDate.now(), LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(date1))).getDays();
+            days = Period.between(
+                    LocalDate.now(),
+                    LocalDate.parse(
+                            DatePatternConstraint.DATE_FORMAT.format(DateValidator.adjustDate(date1))
+                    )).getDays();
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE, e);
         }

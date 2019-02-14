@@ -6,8 +6,10 @@ import com.upgrade.challenge.reservation.repository.ReservationRepository;
 import com.upgrade.challenge.reservation.service.CampsiteService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
 import com.upgrade.challenge.reservation.validation.validator.DateValidator;
+import com.upgrade.challenge.reservation.validation.validator.ReservationValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +22,10 @@ import java.util.List;
 @Service
 public class CampsiteServiceImpl implements CampsiteService {
 
+    private final static Logger LOG = LoggerFactory.getLogger(ReservationValidator.class);
+    private final static String WARN_MESSAGE = "Invalid date range!";
+    private final static int DEFAULT_RANGE = 30;
+
     @Autowired
     private ReservationRepository repository;
 
@@ -30,6 +36,15 @@ public class CampsiteServiceImpl implements CampsiteService {
 
     private List<Range> getRanges(List<Reservation> reservations, Date date1, Date date2) {
         List<Range> ranges = new ArrayList<>();
+
+        //Check range
+        if(!isValidRange(date1, date2)) {
+            date1 = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date2);
+            calendar.add(Calendar.DAY_OF_MONTH, 30);
+            date2 = calendar.getTime();
+        }
 
         //Step 1: check if startDate of first reserv. is after start date of the range
         LocalDate first = LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(reservations.get(0).getStartDate()));
@@ -66,6 +81,14 @@ public class CampsiteServiceImpl implements CampsiteService {
         cal.setTime(date);
         cal.add(Calendar.DAY_OF_MONTH, -1);
         return LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(DateValidator.adjustDate(cal.getTime())));
+    }
+
+    private boolean isValidRange(Date date1, Date date2) {
+        boolean valid = false;
+        int days = -1;
+        valid = date1.toInstant().isAfter(new Date().toInstant());
+        valid = valid && date2.toInstant().isAfter(date1.toInstant());
+        return valid;
     }
 
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,9 +29,10 @@ public class DateValidator implements ConstraintValidator<DatePatternConstraint,
         boolean valid = false;
         try {
             DatePatternConstraint.DATE_FORMAT.format(date);
-            valid = true;
+            valid = date.toInstant().isAfter(new Date().toInstant());
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE + date, e);
+            valid = false;
         }
         return valid;
     }
