@@ -2,9 +2,11 @@ package com.upgrade.challenge.reservation.domain;
 
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
 import com.upgrade.challenge.reservation.validation.ReservationConstraint;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -24,11 +26,9 @@ public class Reservation {
     @Column(name = "id")
     private Long id;
 
-    @Column(unique = true)
     @DatePatternConstraint
     private Date startDate;
 
-    @Column(unique = true)
     @DatePatternConstraint
     private Date endDate;
 
@@ -54,5 +54,18 @@ public class Reservation {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.startDate.hashCode() * this.endDate.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Reservation))
+            return false;
+        Reservation r = (Reservation) obj;
+        return this.startDate.equals(r.getStartDate()) && this.endDate.equals(r.getEndDate());
     }
 }

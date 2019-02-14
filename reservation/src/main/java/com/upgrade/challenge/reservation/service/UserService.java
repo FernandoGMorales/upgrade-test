@@ -3,6 +3,8 @@ package com.upgrade.challenge.reservation.service;
 import com.upgrade.challenge.reservation.exception.UserException;
 import com.upgrade.challenge.reservation.domain.User;
 
+import java.util.List;
+
 /**
  * A contract for {@link User} management.
  *
@@ -33,6 +35,13 @@ public interface UserService {
      * @throws UserException
      */
     User findByEmail(String email) throws UserException;
+
+    /**
+     * Find all {@link User}
+     * @return a {@link List} of all {@link User}
+     * @throws UserException
+     */
+    List<User> findAll() throws UserException;
 
     /**
      * Persist a {@link User}

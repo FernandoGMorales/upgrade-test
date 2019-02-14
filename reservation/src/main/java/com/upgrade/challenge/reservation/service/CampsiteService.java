@@ -1,9 +1,12 @@
 package com.upgrade.challenge.reservation.service;
 
+import com.upgrade.challenge.reservation.controller.dto.Range;
+
+import java.util.Date;
 import java.util.List;
 
 public interface CampsiteService {
 
-    List<?> findByRange(String date1, String date2);
+    List<Range> findByRange(Date date1, Date date2);
 
 }

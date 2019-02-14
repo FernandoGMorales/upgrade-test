@@ -3,6 +3,8 @@ package com.upgrade.challenge.reservation.service;
 import com.upgrade.challenge.reservation.exception.ReservationException;
 import com.upgrade.challenge.reservation.domain.Reservation;
 
+import java.util.Date;
+
 /**
  * A contract for {@link Reservation} management.
  *
@@ -15,7 +17,7 @@ public interface ReservationService {
      * @return the {@link Reservation} found, otherwise null.
      * @throws ReservationException
      */
-    Reservation findByStartDate(String startDate) throws ReservationException;
+    Reservation findByStartDate(Date startDate) throws ReservationException;
 
     /**
      * Search for {@link Reservation} in the given date.
@@ -23,7 +25,7 @@ public interface ReservationService {
      * @return the {@link Reservation} found, otherwise null.
      * @throws ReservationException
      */
-    Reservation findByEndDate(String endDate) throws ReservationException;
+    Reservation findByEndDate(Date endDate) throws ReservationException;
 
     /**
      * Persist a {@link Reservation}.

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Date;
 
 /**
  * Created by fernando on 10/02/19.
  */
 @RestController
-
 @Validated
 public class ReservationController {
 
@@ -23,12 +23,12 @@ public class ReservationController {
     private ReservationService service;
 
     @GetMapping("/reservation/startDate")
-    public Reservation findByStartDate(@RequestParam(value="date") @DatePatternConstraint String date) throws ReservationException {
+    public Reservation findByStartDate(@RequestParam(value="date") @DatePatternConstraint Date date) throws ReservationException {
         return service.findByStartDate(date);
     }
 
     @GetMapping("/reservation/endDate")
-    public Reservation findByEndDate(@RequestParam(value="date") @DatePatternConstraint String date) throws ReservationException {
+    public Reservation findByEndDate(@RequestParam(value="date") @DatePatternConstraint Date date) throws ReservationException {
         return service.findByEndDate(date);
     }
 

@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by fernando on 10/02/19.
  */
@@ -55,6 +57,18 @@ public class UserServiceImpl implements UserService {
             throw new UserException(WARN_MESSAGE);
         }
         return user;
+    }
+
+    @Override
+    public List<User> findAll() throws UserException {
+        List<User> users = null;
+        try {
+            users = repository.findAll();
+        } catch(Exception e) {
+            LOG.error(WARN_MESSAGE, e);
+            throw new UserException(WARN_MESSAGE);
+        }
+        return users;
     }
 
     @Override

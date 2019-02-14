@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -26,7 +27,7 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationRepository repository;
 
     @Override
-    public Reservation findByStartDate(String startDate) throws ReservationException {
+    public Reservation findByStartDate(Date startDate) throws ReservationException {
         Reservation reservation = null;
         try {
             reservation = repository.findByStartDate(startDate);
@@ -38,7 +39,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation findByEndDate(String endDate) throws ReservationException {
+    public Reservation findByEndDate(Date endDate) throws ReservationException {
         Reservation reservation = null;
         try {
             reservation = repository.findByEndDate(endDate);
