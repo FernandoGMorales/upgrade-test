@@ -1,6 +1,7 @@
 package com.upgrade.challenge.reservation.controller;
 
 import com.upgrade.challenge.reservation.domain.Reservation;
+import com.upgrade.challenge.reservation.domain.User;
 import com.upgrade.challenge.reservation.exception.ReservationException;
 import com.upgrade.challenge.reservation.service.ReservationService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
@@ -22,24 +23,29 @@ public class ReservationController {
     @Autowired
     private ReservationService service;
 
-    @GetMapping("/reservation/startDate")
+    @GetMapping("/reservations/startDate")
     public Reservation findByStartDate(@RequestParam(value="date") @DatePatternConstraint Date date) throws ReservationException {
         return service.findByStartDate(date);
     }
 
-    @GetMapping("/reservation/endDate")
+    @GetMapping("/reservations/endDate")
     public Reservation findByEndDate(@RequestParam(value="date") @DatePatternConstraint Date date) throws ReservationException {
         return service.findByEndDate(date);
     }
 
-    @PostMapping("/reservation/save")
+    @PostMapping("/reservations/save")
     public Reservation save(@RequestBody @Valid Reservation reservation) throws ReservationException {
         return service.save(reservation);
     }
 
-    @GetMapping("/reservation/cancel")
+    @GetMapping("/reservations/cancel")
     public void cancel(@RequestParam(value="id") @Positive Long id) throws ReservationException {
         service.cancel(id);
+    }
+
+    @PostMapping("/reservations/modify")
+    public Reservation modify(@RequestBody @Valid Reservation reservation) throws ReservationException {
+        return service.modify(reservation);
     }
 
 }

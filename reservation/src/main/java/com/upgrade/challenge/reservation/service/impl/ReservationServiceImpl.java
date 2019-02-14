@@ -75,13 +75,17 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation modify(Reservation reservation) throws ReservationException {
-        //Step 1: check availability
-
-        //Step 2: updates reservation
-        Reservation persisted = repository.findById(reservation.getId()).get();
-        persisted.setStartDate(reservation.getStartDate());
-        persisted.setEndDate(reservation.getEndDate());
-        return this.save(persisted);
+        Reservation modified = null;
+        try {
+            Reservation persisted = repository.findById(reservation.getId()).get();
+            persisted.setStartDate(reservation.getStartDate());
+            persisted.setEndDate(reservation.getEndDate());
+            modified = this.save(persisted);
+        } catch(Exception e) {
+            LOG.error(WARN_MESSAGE, e);
+            throw new ReservationException(WARN_MESSAGE);
+        }
+        return modified;
     }
 
 }

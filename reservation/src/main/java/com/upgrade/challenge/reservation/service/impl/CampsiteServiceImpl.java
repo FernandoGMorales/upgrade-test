@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Future;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -29,9 +30,14 @@ public class CampsiteServiceImpl implements CampsiteService {
     @Autowired
     private ReservationRepository repository;
 
+    @Future private Date startRange;
+    @Future private Date endRange;
+
     @Override
     public List<Range> findByRange(Date date1, Date date2) {
-        return getRanges(repository.findByRange(date1, date2), date1, date2);
+        startRange = date1;
+        endRange = date2;
+        return getRanges(repository.findByRange(startRange, endRange), startRange, endRange);
     }
 
     private List<Range> getRanges(List<Reservation> reservations, Date date1, Date date2) {
@@ -90,5 +96,4 @@ public class CampsiteServiceImpl implements CampsiteService {
         valid = valid && date2.toInstant().isAfter(date1.toInstant());
         return valid;
     }
-
 }

@@ -2,6 +2,7 @@ package com.upgrade.challenge.reservation.service.impl;
 
 import com.upgrade.challenge.reservation.exception.UserException;
 import com.upgrade.challenge.reservation.domain.User;
+import com.upgrade.challenge.reservation.repository.ReservationRepository;
 import com.upgrade.challenge.reservation.repository.UserRepository;
 import com.upgrade.challenge.reservation.service.UserService;
 import org.slf4j.Logger;
@@ -21,13 +22,15 @@ public class UserServiceImpl implements UserService {
     private final static String WARN_MESSAGE = "There has been an error while processing this request.";
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     public User findByFirstName(String firstName) throws UserException {
         User user = null;
         try {
-            user = repository.findByFirstName(firstName);
+            user = userRepository.findByFirstName(firstName);
         } catch(Exception e) {
             LOG.error(WARN_MESSAGE, e);
             throw new UserException(WARN_MESSAGE);
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService {
     public User findByLastName(String lastName) throws UserException {
         User user = null;
         try {
-            user = repository.findByLastName(lastName);
+            user = userRepository.findByLastName(lastName);
         } catch(Exception e) {
             LOG.error(WARN_MESSAGE, e);
             throw new UserException(WARN_MESSAGE);
@@ -51,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) throws UserException {
         User user = null;
         try {
-            user = repository.findByEmail(email);
+            user = userRepository.findByEmail(email);
         } catch(Exception e) {
             LOG.error(WARN_MESSAGE, e);
             throw new UserException(WARN_MESSAGE);
@@ -63,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() throws UserException {
         List<User> users = null;
         try {
-            users = repository.findAll();
+            users = userRepository.findAll();
         } catch(Exception e) {
             LOG.error(WARN_MESSAGE, e);
             throw new UserException(WARN_MESSAGE);
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) throws UserException {
         User persisted = null;
         try {
-            persisted = repository.save(user);
+            persisted = userRepository.save(user);
         } catch(Exception e) {
             LOG.error(WARN_MESSAGE, e);
             throw new UserException(WARN_MESSAGE);

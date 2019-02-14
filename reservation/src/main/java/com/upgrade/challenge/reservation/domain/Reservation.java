@@ -6,6 +6,7 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -27,9 +28,11 @@ public class Reservation {
     private Long id;
 
     @DatePatternConstraint
+    @Future
     private Date startDate;
 
     @DatePatternConstraint
+    @Future
     private Date endDate;
 
     public void setId(Long id) {
