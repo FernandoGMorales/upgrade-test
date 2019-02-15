@@ -2,6 +2,7 @@ package com.upgrade.challenge.reservation.service.impl;
 
 import com.upgrade.challenge.reservation.controller.dto.Range;
 import com.upgrade.challenge.reservation.domain.Reservation;
+import com.upgrade.challenge.reservation.exception.CampsiteException;
 import com.upgrade.challenge.reservation.repository.ReservationRepository;
 import com.upgrade.challenge.reservation.service.CampsiteService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
@@ -24,7 +25,7 @@ import java.util.List;
 public class CampsiteServiceImpl implements CampsiteService {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReservationValidator.class);
-    private final static String WARN_MESSAGE = "Invalid date range!";
+    private final static String WARN_MESSAGE = "Cannot verify range availability.";
     private final static int DEFAULT_RANGE = 30;
 
     @Autowired
@@ -34,10 +35,17 @@ public class CampsiteServiceImpl implements CampsiteService {
     @Future private Date endRange;
 
     @Override
-    public List<Range> findByRange(Date date1, Date date2) {
+    public List<Range> findByRange(Date date1, Date date2) throws CampsiteException {
         startRange = date1;
         endRange = date2;
-        return getRanges(repository.findByRange(startRange, endRange), startRange, endRange);
+        List<Range> range = null;
+        try {
+            range = getRanges(repository.findByRange(startRange, endRange), startRange, endRange);
+        } catch(Exception e) {
+            LOG.error(WARN_MESSAGE, e);
+            throw new CampsiteException(WARN_MESSAGE);
+        }
+        return range;
     }
 
     private List<Range> getRanges(List<Reservation> reservations, Date date1, Date date2) {
@@ -48,7 +56,7 @@ public class CampsiteServiceImpl implements CampsiteService {
             date1 = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date2);
-            calendar.add(Calendar.DAY_OF_MONTH, 30);
+            calendar.add(Calendar.DAY_OF_MONTH, DEFAULT_RANGE);
             date2 = calendar.getTime();
         }
 

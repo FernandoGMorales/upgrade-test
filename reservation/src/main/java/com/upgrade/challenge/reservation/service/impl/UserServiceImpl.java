@@ -19,7 +19,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-    private final static String WARN_MESSAGE = "There has been an error while processing this request.";
 
     @Autowired
     private UserRepository userRepository;
@@ -32,8 +31,7 @@ public class UserServiceImpl implements UserService {
         try {
             user = userRepository.findByFirstName(firstName);
         } catch(Exception e) {
-            LOG.error(WARN_MESSAGE, e);
-            throw new UserException(WARN_MESSAGE);
+            handleException(e, "User with first name " + firstName + " has not been found!");
         }
         return user;
     }
@@ -44,8 +42,7 @@ public class UserServiceImpl implements UserService {
         try {
             user = userRepository.findByLastName(lastName);
         } catch(Exception e) {
-            LOG.error(WARN_MESSAGE, e);
-            throw new UserException(WARN_MESSAGE);
+            handleException(e, "User with last name " + lastName + " has not been found!");
         }
         return user;
     }
@@ -56,8 +53,7 @@ public class UserServiceImpl implements UserService {
         try {
             user = userRepository.findByEmail(email);
         } catch(Exception e) {
-            LOG.error(WARN_MESSAGE, e);
-            throw new UserException(WARN_MESSAGE);
+            handleException(e, "User with email " + email + " has not been found!");
         }
         return user;
     }
@@ -68,8 +64,7 @@ public class UserServiceImpl implements UserService {
         try {
             users = userRepository.findAll();
         } catch(Exception e) {
-            LOG.error(WARN_MESSAGE, e);
-            throw new UserException(WARN_MESSAGE);
+            handleException(e, "There are no users found!");
         }
         return users;
     }
@@ -80,9 +75,14 @@ public class UserServiceImpl implements UserService {
         try {
             persisted = userRepository.save(user);
         } catch(Exception e) {
-            LOG.error(WARN_MESSAGE, e);
-            throw new UserException(WARN_MESSAGE);
+            handleException(e, "The user cannot be persisted!");
         }
         return persisted;
     }
+
+    private void handleException(Exception e, String message) throws UserException {
+        LOG.error(message, e);
+        throw new UserException(message);
+    }
+
 }

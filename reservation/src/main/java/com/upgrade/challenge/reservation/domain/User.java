@@ -10,25 +10,26 @@ import javax.validation.constraints.NotEmpty;
  * Created by fernando on 09/02/19.
  */
 @Entity
+@IdClass(PersonId.class)
 @Validated
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     @NotEmpty(message = "Email cannot be null.")
     @Email(message = "Email should be valid.")
-    private String email;
+    @Id private String email;
 
     @NotEmpty(message = "Name cannot be null.")
-    private String firstName;
+    @Id private String firstName;
 
     @NotEmpty(message = "Last name cannot be null")
-    private String lastName;
+    @Id private String lastName;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
     public String getEmail() {

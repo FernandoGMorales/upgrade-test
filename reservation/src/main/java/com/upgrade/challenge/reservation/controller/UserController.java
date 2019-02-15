@@ -47,11 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/users/save")
-    public User save(@RequestBody @Valid User user) {
-        try {
-            return service.save(user);
-        } catch (UserException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMsg(), e);
-        }
+    public User save(@RequestBody @Valid User user) throws UserException {
+        return service.save(user);
     }
 }
