@@ -50,8 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
-    @Override
-    @Transactional
+    @Override @Transactional
     public Reservation save(Reservation reservation) throws ReservationException {
         Reservation persisted = null;
         try {
@@ -73,7 +72,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    @Override
+    @Override @Transactional
     public Reservation modify(Reservation reservation) throws ReservationException {
         Reservation modified = null;
         try {

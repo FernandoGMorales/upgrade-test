@@ -1,7 +1,6 @@
 package com.upgrade.challenge.reservation.controller;
 
 import com.upgrade.challenge.reservation.domain.Reservation;
-import com.upgrade.challenge.reservation.domain.User;
 import com.upgrade.challenge.reservation.exception.ReservationException;
 import com.upgrade.challenge.reservation.service.ReservationService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;

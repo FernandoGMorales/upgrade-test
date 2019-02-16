@@ -18,7 +18,8 @@ import java.util.Date;
 @ReservationConstraint(
         startDate = "startDate",
         endDate = "endDate",
-        message = "Date range is invalid!"
+        message = "Reservations in advance must be placed 1 to 30 days prior to arrive.\n" +
+                "Stays are from 1 to 3 days."
 )
 public class Reservation {
 
