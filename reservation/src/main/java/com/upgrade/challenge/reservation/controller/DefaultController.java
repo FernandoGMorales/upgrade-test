@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 public class DefaultController implements ErrorController {
 
     @RequestMapping("/error")
-    @ResponseBody
     public ResponseMsg handleError(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         String uri = (String) request.getAttribute("javax.servlet.error.request_uri");

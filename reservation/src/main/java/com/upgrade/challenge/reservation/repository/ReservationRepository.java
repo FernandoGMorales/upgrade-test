@@ -11,11 +11,6 @@ import java.util.List;
  * Created by fernando on 09/02/19.
  */
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
-    Reservation findByStartDate(Date startDate);
-
-    Reservation findByEndDate(Date endDate);
-
     /**
      * Search for {@link Reservation} entities in the given range.
      * @param date1 start date.

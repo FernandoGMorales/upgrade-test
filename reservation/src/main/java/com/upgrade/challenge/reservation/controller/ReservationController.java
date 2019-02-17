@@ -1,6 +1,7 @@
 package com.upgrade.challenge.reservation.controller;
 
 import com.upgrade.challenge.reservation.domain.Reservation;
+import com.upgrade.challenge.reservation.exception.EntityNotFoundException;
 import com.upgrade.challenge.reservation.exception.ReservationException;
 import com.upgrade.challenge.reservation.service.ReservationService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
@@ -22,28 +23,15 @@ public class ReservationController {
     @Autowired
     private ReservationService service;
 
-    @GetMapping("/reservations/startDate")
-    public Reservation findByStartDate(@RequestParam(value="date") @DatePatternConstraint Date date) throws ReservationException {
-        return service.findByStartDate(date);
-    }
-
-    @GetMapping("/reservations/endDate")
-    public Reservation findByEndDate(@RequestParam(value="date") @DatePatternConstraint Date date) throws ReservationException {
-        return service.findByEndDate(date);
-    }
-
-    @PostMapping("/reservations/save")
-    public Reservation save(@RequestBody @Valid Reservation reservation) throws ReservationException {
-        return service.save(reservation);
-    }
-
     @GetMapping("/reservations/cancel")
-    public void cancel(@RequestParam(value="id") @Positive Long id) throws ReservationException {
+    public void cancel(@RequestParam(value="id") @Positive Long id)
+            throws ReservationException, EntityNotFoundException {
         service.cancel(id);
     }
 
     @PostMapping("/reservations/modify")
-    public Reservation modify(@RequestBody @Valid Reservation reservation) throws ReservationException {
+    public Reservation modify(@RequestBody @Valid Reservation reservation)
+            throws ReservationException, EntityNotFoundException {
         return service.modify(reservation);
     }
 

@@ -1,5 +1,6 @@
 package com.upgrade.challenge.reservation.service;
 
+import com.upgrade.challenge.reservation.exception.EntityNotFoundException;
 import com.upgrade.challenge.reservation.exception.ReservationException;
 import com.upgrade.challenge.reservation.domain.Reservation;
 
@@ -12,44 +13,19 @@ import java.util.Date;
  */
 public interface ReservationService {
     /**
-     * Search for {@link Reservation} in the given date.
-     * @param startDate the target date.
-     * @return the {@link Reservation} found, otherwise null.
-     * @throws ReservationException
-     */
-    Reservation findByStartDate(Date startDate) throws ReservationException;
-
-    /**
-     * Search for {@link Reservation} in the given date.
-     * @param endDate the target date.
-     * @return the {@link Reservation} found, otherwise null.
-     * @throws ReservationException
-     */
-    Reservation findByEndDate(Date endDate) throws ReservationException;
-
-    /**
-     * Persist a {@link Reservation}.
-     * @param reservation the {@link Reservation} to be saved.
-     * @return the persisted {@link Reservation}
-     * @throws ReservationException
-     */
-    Reservation save(Reservation reservation) throws ReservationException;
-
-    /**
      * Cancel the {@link Reservation}
      * @param id unique identifier of the {@link Reservation}
      * @throws ReservationException
+     * @throws EntityNotFoundException
      */
-    void cancel(Long id) throws ReservationException;
+    void cancel(Long id) throws ReservationException, EntityNotFoundException;
 
     /**
      * Modifies a {@link Reservation}.
      * @param reservation the {@link Reservation} to be modified.
      * @return the persisted {@link Reservation}
      * @throws ReservationException
+     * @throws EntityNotFoundException
      */
-    Reservation modify(Reservation reservation) throws ReservationException;
-
-
-
+    Reservation modify(Reservation reservation) throws ReservationException, EntityNotFoundException;
 }

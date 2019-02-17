@@ -1,13 +1,13 @@
 package com.upgrade.challenge.reservation.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
 import com.upgrade.challenge.reservation.validation.ReservationConstraint;
-import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -19,7 +19,9 @@ import java.util.Date;
         startDate = "startDate",
         endDate = "endDate",
         message = "Reservations in advance must be placed 1 to 30 days prior to arrive.\n" +
-                "Stays are from 1 to 3 days."
+                "Stays are from 1 to 3 days.\n" +
+                "Start date must be set before end date.\n" +
+                "Date pattern must be yyyy-MM-dd"
 )
 public class Reservation {
 
@@ -30,10 +32,14 @@ public class Reservation {
 
     @DatePatternConstraint
     @Future
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(unique=true)
     private Date startDate;
 
     @DatePatternConstraint
     @Future
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(unique=true)
     private Date endDate;
 
     public void setId(Long id) {
@@ -62,7 +68,7 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return this.startDate.hashCode() * this.endDate.hashCode();
+        return this.id.hashCode();
     }
 
     @Override
@@ -70,6 +76,6 @@ public class Reservation {
         if(!(obj instanceof Reservation))
             return false;
         Reservation r = (Reservation) obj;
-        return this.startDate.equals(r.getStartDate()) && this.endDate.equals(r.getEndDate());
+        return this.id.equals(r.getId());
     }
 }

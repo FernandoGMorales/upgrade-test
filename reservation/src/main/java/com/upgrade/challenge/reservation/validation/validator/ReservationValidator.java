@@ -10,6 +10,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -42,13 +43,12 @@ public class ReservationValidator implements ConstraintValidator<ReservationCons
     }
 
     private boolean isAllowedToReserve(Date date1, Date date2) {
+        if(date1==null || date2==null)
+            return false;
         int days = -1;
+        String beginDate = DatePatternConstraint.DATE_FORMAT.format(DateValidator.adjustDate(date1));
         try {
-            days = Period.between(
-                    LocalDate.now(),
-                    LocalDate.parse(
-                            DatePatternConstraint.DATE_FORMAT.format(DateValidator.adjustDate(date1))
-                    )).getDays();
+            days = (int) ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(beginDate));
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE, e);
         }
@@ -60,9 +60,9 @@ public class ReservationValidator implements ConstraintValidator<ReservationCons
     private boolean isValidRange(Date date1, Date date2) {
         int days = -1;
         try {
-            days = Period.between(
+            days = (int) ChronoUnit.DAYS.between(
                     LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(date1)),
-                    LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(date2))).getDays();
+                    LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(date2)));
         } catch (Exception e) {
             LOG.error(WARN_MESSAGE, e);
         }

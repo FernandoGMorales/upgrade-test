@@ -1,5 +1,6 @@
 package com.upgrade.challenge.reservation.service;
 
+import com.upgrade.challenge.reservation.exception.EntityNotFoundException;
 import com.upgrade.challenge.reservation.exception.UserException;
 import com.upgrade.challenge.reservation.domain.User;
 
@@ -13,35 +14,12 @@ import java.util.List;
 
 public interface UserService {
     /**
-     * Search for {@link User} with the given name.
-     * @param firstName user's name.
-     * @return the {@link User} found, otherwise null.
-     * @throws UserException
-     */
-    User findByFirstName(String firstName) throws UserException;
-
-    /**
-     * Search for {@link User} with the given last name.
-     * @param lastName user's last name.
-     * @return the {@link User} found, otherwise null.
-     * @throws UserException
-     */
-    User findByLastName(String lastName) throws UserException;
-
-    /**
-     * Search for {@link User} with the given email.
-     * @param email user's email.
-     * @return the {@link User} found, otherwise null.
-     * @throws UserException
-     */
-    User findByEmail(String email) throws UserException;
-
-    /**
      * Find all {@link User}
      * @return a {@link List} of all {@link User}
      * @throws UserException
+     * @throws EntityNotFoundException
      */
-    List<User> findAll() throws UserException;
+    List<User> findAll() throws UserException, EntityNotFoundException;
 
     /**
      * Persist a {@link User}

@@ -1,5 +1,7 @@
 package com.upgrade.challenge.reservation.service.impl;
 
+import com.upgrade.challenge.reservation.domain.Reservation;
+import com.upgrade.challenge.reservation.exception.EntityNotFoundException;
 import com.upgrade.challenge.reservation.exception.UserException;
 import com.upgrade.challenge.reservation.domain.User;
 import com.upgrade.challenge.reservation.repository.ReservationRepository;
@@ -8,9 +10,12 @@ import com.upgrade.challenge.reservation.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**
@@ -20,6 +25,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final static String ERROR = "Cannot perform request call: ";
 
     @Autowired
     private UserRepository userRepository;
@@ -27,45 +33,14 @@ public class UserServiceImpl implements UserService {
     private ReservationRepository reservationRepository;
 
     @Override
-    public User findByFirstName(String firstName) throws UserException {
-        User user = null;
-        try {
-            user = userRepository.findByFirstName(firstName);
-        } catch(Exception e) {
-            handleException(e, "User with first name " + firstName + " has not been found!");
-        }
-        return user;
-    }
-
-    @Override
-    public User findByLastName(String lastName) throws UserException {
-        User user = null;
-        try {
-            user = userRepository.findByLastName(lastName);
-        } catch(Exception e) {
-            handleException(e, "User with last name " + lastName + " has not been found!");
-        }
-        return user;
-    }
-
-    @Override
-    public User findByEmail(String email) throws UserException {
-        User user = null;
-        try {
-            user = userRepository.findByEmail(email);
-        } catch(Exception e) {
-            handleException(e, "User with email " + email + " has not been found!");
-        }
-        return user;
-    }
-
-    @Override
-    public List<User> findAll() throws UserException {
+    public List<User> findAll() throws UserException, EntityNotFoundException {
         List<User> users = null;
         try {
             users = userRepository.findAll();
+            if(users.isEmpty())
+                throw new EntityNotFoundException("No users found!");
         } catch(Exception e) {
-            handleException(e, "There are no users found!");
+            handleError(e);
         }
         return users;
     }
@@ -74,16 +49,26 @@ public class UserServiceImpl implements UserService {
     public User save(User user) throws UserException {
         User persisted = null;
         try {
-            persisted = userRepository.save(user);
+            Reservation reservation = user.getReservation();
+            List<Reservation> reservations = reservationRepository.
+                    findByRange(reservation.getStartDate(), reservation.getEndDate());
+            if(reservations.isEmpty()) {
+                persisted = userRepository.saveAndFlush(user);
+            }
+            else {
+                throw new UserException("There exists reservations in that period. Please check availability.");
+            }
         } catch(Exception e) {
-            handleException(e, "The user cannot be persisted!");
+            throw e;
         }
         return persisted;
     }
 
-    private void handleException(Exception e, String message) throws UserException {
-        LOG.error(message, e);
-        throw new UserException(message);
+    private void handleError(Exception e) throws EntityNotFoundException, UserException {
+        if(e instanceof EntityNotFoundException)
+            throw (EntityNotFoundException) e;
+        else
+            throw new UserException(ERROR + e.getCause().getMessage());
     }
 
 }
