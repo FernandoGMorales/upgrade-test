@@ -2,18 +2,13 @@ package com.upgrade.challenge.reservation.repository;
 
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
-import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -24,20 +19,14 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserRepositoryTest {
-
-    @Autowired
-    private UserRepository repository;
-
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+public class UserRepositoryTest extends AbstractTestCase {
 
     @Test
     public void givenUserWithCorrectData_whenUserSaves_thenUserIsPersisted() {
         LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
         Reservation reservation = getReservation(getDate(d1.plusDays(1)), getDate(d1.plusDays(3)), null);
         User user = getUser("Gaivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        User persisted = repository.saveAndFlush(user);
+        User persisted = userRepository.saveAndFlush(user);
         assertEquals(user, persisted);
         assertThat(persisted.getReservation(), hasProperty("id", greaterThan(0l)));
     }
@@ -50,7 +39,7 @@ public class UserRepositoryTest {
         exceptionRule.expectMessage(containsString("Email cannot be null"));
         exceptionRule.expectMessage(containsString("'must not be null', propertyPath=reservation"));
 
-        repository.saveAndFlush(getUser(null, null, null, null));
+        userRepository.saveAndFlush(getUser(null, null, null, null));
     }
 
     @Test
@@ -62,7 +51,7 @@ public class UserRepositoryTest {
         LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
         Reservation reservation = getReservation(getDate(d1.plusDays(1)), getDate(d1.plusDays(3)), null);
         User user = getUser("", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -74,7 +63,7 @@ public class UserRepositoryTest {
         LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
         Reservation reservation = getReservation(getDate(d1.plusDays(1)), getDate(d1.plusDays(3)), null);
         User user = getUser("Gaivs", "", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -85,7 +74,7 @@ public class UserRepositoryTest {
         LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
         Reservation reservation = getReservation(getDate(d1), getDate(d1.plusDays(4)), null);
         User user = getUser("Gaivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -97,7 +86,7 @@ public class UserRepositoryTest {
         LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
         Reservation reservation = getReservation(getDate(d1), getDate(d1.minusDays(2)), null);
         User user = getUser("Gaivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -108,7 +97,7 @@ public class UserRepositoryTest {
 
         Reservation reservation = getReservation(new Date(), new Date(), null);
         User user = getUser("Gaivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -119,7 +108,7 @@ public class UserRepositoryTest {
 
         Reservation reservation = getReservation(null, new Date(), null);
         User user = getUser("Gaivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -130,32 +119,6 @@ public class UserRepositoryTest {
 
         Reservation reservation = getReservation(new Date(), null, null);
         User user = getUser("Gaivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        repository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
     }
-
-    private CharSequence getDateAsString(Date date) {
-        return DatePatternConstraint.DATE_FORMAT.format(date);
-    }
-
-    private Date getDate(LocalDate d1) {
-        return Date.from(d1.atStartOfDay(ZoneId.systemDefault()).toInstant());
-    }
-
-    private User getUser(String name, String lastname, String email, Reservation reservation) {
-        User user = new User();
-        user.setFirstName(name);
-        user.setLastName(lastname);
-        user.setEmail(email);
-        user.setReservation(reservation);
-        return user;
-    }
-
-    private Reservation getReservation(Date startDate, Date endDate, Long id) {
-        Reservation reservation = new Reservation();
-        reservation.setStartDate(startDate);
-        reservation.setEndDate(endDate);
-        reservation.setId(id);
-        return reservation;
-    }
-
 }

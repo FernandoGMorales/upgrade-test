@@ -1,17 +1,12 @@
 package com.upgrade.challenge.reservation.repository;
 
-import com.upgrade.challenge.reservation.domain.Reservation;
-import com.upgrade.challenge.reservation.domain.User;
-import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -22,11 +17,39 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class ReservationRepositoryTest {
+public class ReservationRepositoryTest extends AbstractTestCase {
 
-    @Autowired
-    private ReservationRepository repository;
+    @Before
+    public void init() {
+        initDataset();
+    }
 
+    @Test
+    public void givenValidRange_whenCallFindByRange_andAllReservationsAreInRange_thenAListOfAllReservationsIsRetrieved() {
+        LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
+        assertThat(reservationRepository.findByRange(getDate(d1), getDate(d1.plusMonths(1))), hasSize(6));
+    }
 
+    @Test
+    public void givenValidRange_whenCallFindByRange_andSomeReservationsAreInRange_thenAListOfThoseReservationsIsRetrieved() {
+        LocalDate d1 = LocalDate.parse(getDateAsString(new Date()));
+        assertThat(reservationRepository.findByRange(getDate(d1), getDate(d1.plusDays(10))), hasSize(3));
+    }
 
+    @Test
+    public void givenValidRange_whenCallFindByRange_andNoneReservationsAreInRange_thenAnEmptyListIsRetrieved() {
+        LocalDate d1 = LocalDate.parse(getDateAsString(new Date())).minusDays(3);
+        assertThat(reservationRepository.findByRange(getDate(d1), getDate(d1.plusDays(1))), hasSize(0));
+    }
+
+    @Test
+    public void givenAnInValidRange_whenCallFindByRange_thenAnEmptyListIsRetrieved() {
+        LocalDate d1 = LocalDate.parse(getDateAsString(new Date())).plusMonths(1);
+        assertThat(reservationRepository.findByRange(getDate(d1), getDate(LocalDate.now())), hasSize(0));
+    }
+
+    @Test
+    public void givenNullDateRanges_whenCallFindByRange_thenAnEmptyListIsRetrieved() {
+        assertThat(reservationRepository.findByRange(null, null), hasSize(0));
+    }
 }

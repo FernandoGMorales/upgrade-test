@@ -50,6 +50,9 @@ public class UserServiceImpl implements UserService {
         User persisted = null;
         try {
             Reservation reservation = user.getReservation();
+            if(reservation==null) {
+                throw new UserException("Reservation is missing.");
+            }
             List<Reservation> reservations = reservationRepository.
                     findByRange(reservation.getStartDate(), reservation.getEndDate());
             if(reservations.isEmpty()) {

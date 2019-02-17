@@ -30,7 +30,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_id")
-    @NotNull
+    @NotNull(message = "Reservation is missing.")
     private Reservation reservation;
 
     public String getEmail() {
