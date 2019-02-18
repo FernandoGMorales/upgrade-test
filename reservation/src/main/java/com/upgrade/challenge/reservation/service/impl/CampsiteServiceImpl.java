@@ -40,7 +40,18 @@ public class CampsiteServiceImpl implements CampsiteService {
         endRange = date2;
         List<Range> range = null;
         try {
-            range = getRanges(repository.findByRange(startRange, endRange), startRange, endRange);
+            List<Reservation> list = repository.findByRange(startRange, endRange);
+            if(list.isEmpty()) {
+                range = new ArrayList<>();
+                range.add(
+                        new Range(
+                                DatePatternConstraint.DATE_FORMAT.format(startRange),
+                                DatePatternConstraint.DATE_FORMAT.format(endRange))
+                );
+            }
+            else {
+                range = getRanges(list, startRange, endRange);
+            }
         } catch(Exception e) {
             LOG.error(WARN_MESSAGE, e);
             throw new CampsiteException(WARN_MESSAGE);

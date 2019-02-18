@@ -1,5 +1,6 @@
 package com.upgrade.challenge.reservation.repository;
 
+import com.upgrade.challenge.reservation.AbstractTestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

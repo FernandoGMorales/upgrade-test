@@ -29,4 +29,16 @@ public class Range {
         this.toDate = toDate;
     }
 
+    @Override
+    public int hashCode() {
+        return fromDate.hashCode() * toDate.hashCode() * 13;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Range))
+            return false;
+        Range range = (Range) obj;
+        return this.fromDate.equals(range.getFromDate()) && this.toDate.equals(range.getToDate());
+    }
 }

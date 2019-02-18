@@ -1,7 +1,11 @@
-package com.upgrade.challenge.reservation.repository;
+package com.upgrade.challenge.reservation;
 
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
+import com.upgrade.challenge.reservation.repository.ReservationRepository;
+import com.upgrade.challenge.reservation.repository.UserRepository;
+import com.upgrade.challenge.reservation.service.CampsiteService;
+import com.upgrade.challenge.reservation.service.ReservationService;
 import com.upgrade.challenge.reservation.service.UserService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
 import org.junit.Rule;
@@ -25,6 +29,12 @@ public abstract class AbstractTestCase {
 
     @Autowired
     protected UserService userService;
+
+    @Autowired
+    protected ReservationService reservationService;
+
+    @Autowired
+    protected CampsiteService campsiteService;
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();

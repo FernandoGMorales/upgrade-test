@@ -1,5 +1,6 @@
 package com.upgrade.challenge.reservation.repository;
 
+import com.upgrade.challenge.reservation.AbstractTestCase;
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
 import org.junit.Test;

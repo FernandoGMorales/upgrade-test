@@ -3,7 +3,7 @@ package com.upgrade.challenge.reservation.service;
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
 import com.upgrade.challenge.reservation.exception.UserException;
-import com.upgrade.challenge.reservation.repository.AbstractTestCase;
+import com.upgrade.challenge.reservation.AbstractTestCase;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
