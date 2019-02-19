@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,19 +28,35 @@ public class CampsiteController {
     @Autowired
     private CampsiteService service;
 
-    @GetMapping("/campsite/availability")
-    public List<Range> findByRange(
-            @RequestParam(value="date1") @DateStringPatternConstraint String date1,
-            @RequestParam(value="date2") @DateStringPatternConstraint String date2) throws CampsiteException {
+//    @GetMapping("/campsite/availability")
+//    public List<Range> findByRange(
+//            @RequestParam(value="date1") @DateStringPatternConstraint String date1,
+//            @RequestParam(value="date2") @DateStringPatternConstraint String date2) throws CampsiteException {
+//        Date d1 = null;
+//        Date d2 = null;
+//        try {
+//            d1 = DatePatternConstraint.DATE_FORMAT.parse(date1);
+//            d2 = DatePatternConstraint.DATE_FORMAT.parse(date2);
+//        } catch(Exception e) {
+//            LOG.error(PARSE_DATE_ERROR, e);
+//            throw new CampsiteException(PARSE_DATE_ERROR);
+//        }
+//        return service.findByRange(d1, d2);
+//    }
+
+    @GetMapping("/campsite/availability/start/{startRange}/end/{endRange}")
+    public List<Range> findByRange(@PathVariable @DateStringPatternConstraint String startRange,
+                                   @PathVariable @DateStringPatternConstraint String endRange) throws CampsiteException {
         Date d1 = null;
         Date d2 = null;
         try {
-            d1 = DatePatternConstraint.DATE_FORMAT.parse(date1);
-            d2 = DatePatternConstraint.DATE_FORMAT.parse(date2);
+            d1 = DatePatternConstraint.DATE_FORMAT.parse(startRange);
+            d2 = DatePatternConstraint.DATE_FORMAT.parse(endRange);
         } catch(Exception e) {
             LOG.error(PARSE_DATE_ERROR, e);
             throw new CampsiteException(PARSE_DATE_ERROR);
         }
         return service.findByRange(d1, d2);
     }
+
 }

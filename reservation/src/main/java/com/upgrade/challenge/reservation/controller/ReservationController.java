@@ -23,8 +23,8 @@ public class ReservationController {
     @Autowired
     private ReservationService service;
 
-    @GetMapping("/reservations/cancel")
-    public void cancel(@RequestParam(value="id") @Positive Long id)
+    @GetMapping("/reservations/cancel/{id}")
+    public void cancel(@PathVariable @Positive Long id)
             throws ReservationException, EntityNotFoundException {
         service.cancel(id);
     }
