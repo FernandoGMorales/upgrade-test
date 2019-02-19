@@ -1,10 +1,12 @@
 package com.upgrade.challenge.reservation.repository;
 
-import com.upgrade.challenge.reservation.AbstractTestCase;
+import com.upgrade.challenge.reservation.BaseTestCase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -17,12 +19,17 @@ import static org.hamcrest.Matchers.*;
  * Created by fernando on 17/02/19.
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
-public class ReservationRepositoryTest extends AbstractTestCase {
+@SpringBootTest
+public class ReservationRepositoryTest extends BaseTestCase {
 
     @Before
     public void init() {
         initDataset();
+    }
+
+    @After
+    public void clearDB() {
+        userRepository.deleteAll();
     }
 
     @Test

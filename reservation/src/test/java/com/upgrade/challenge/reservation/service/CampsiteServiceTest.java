@@ -2,8 +2,9 @@ package com.upgrade.challenge.reservation.service;
 
 import com.upgrade.challenge.reservation.controller.dto.Range;
 import com.upgrade.challenge.reservation.exception.CampsiteException;
-import com.upgrade.challenge.reservation.AbstractTestCase;
+import com.upgrade.challenge.reservation.BaseTestCase;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,11 +23,16 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CampsiteServiceTest extends AbstractTestCase {
+public class CampsiteServiceTest extends BaseTestCase {
 
     @Before
     public void init() {
         initDataset();
+    }
+
+    @After
+    public void clearDB() {
+        userRepository.deleteAll();
     }
 
     @Test

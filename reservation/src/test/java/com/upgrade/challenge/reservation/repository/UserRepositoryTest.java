@@ -1,11 +1,13 @@
 package com.upgrade.challenge.reservation.repository;
 
-import com.upgrade.challenge.reservation.AbstractTestCase;
+import com.upgrade.challenge.reservation.BaseTestCase;
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
@@ -19,8 +21,13 @@ import static org.hamcrest.Matchers.*;
  * Created by fernando on 17/02/19.
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
-public class UserRepositoryTest extends AbstractTestCase {
+@SpringBootTest
+public class UserRepositoryTest extends BaseTestCase {
+
+    @After
+    public void clearDB() {
+        userRepository.deleteAll();
+    }
 
     @Test
     public void givenUserWithCorrectData_whenUserSaves_thenUserIsPersisted() {
@@ -37,8 +44,7 @@ public class UserRepositoryTest extends AbstractTestCase {
         exceptionRule.expect(ConstraintViolationException.class);
         exceptionRule.expectMessage(containsString("Name cannot be null"));
         exceptionRule.expectMessage(containsString("Last name cannot be null"));
-        exceptionRule.expectMessage(containsString("Email cannot be null"));
-        exceptionRule.expectMessage(containsString("'must not be null', propertyPath=reservation"));
+        exceptionRule.expectMessage(containsString("'Reservation is missing.', propertyPath=reservation"));
 
         userRepository.saveAndFlush(getUser(null, null, null, null));
     }

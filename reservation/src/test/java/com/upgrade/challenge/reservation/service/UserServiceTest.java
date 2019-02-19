@@ -3,7 +3,7 @@ package com.upgrade.challenge.reservation.service;
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
 import com.upgrade.challenge.reservation.exception.UserException;
-import com.upgrade.challenge.reservation.AbstractTestCase;
+import com.upgrade.challenge.reservation.BaseTestCase;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserServiceTest extends AbstractTestCase {
+public class UserServiceTest extends BaseTestCase {
 
     @After
     public void clearDB() {
