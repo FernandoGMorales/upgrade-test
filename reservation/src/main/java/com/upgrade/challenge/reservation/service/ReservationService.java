@@ -15,10 +15,11 @@ public interface ReservationService {
     /**
      * Cancel the {@link Reservation}
      * @param id unique identifier of the {@link Reservation}
+     * @return the {@link Reservation} deleted.
      * @throws ReservationException
      * @throws EntityNotFoundException
      */
-    void cancel(Long id) throws ReservationException, EntityNotFoundException;
+    Reservation cancel(Long id) throws ReservationException, EntityNotFoundException;
 
     /**
      * Modifies a {@link Reservation}.

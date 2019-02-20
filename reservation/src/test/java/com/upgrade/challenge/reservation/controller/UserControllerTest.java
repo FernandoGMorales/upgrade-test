@@ -2,38 +2,19 @@ package com.upgrade.challenge.reservation.controller;
 
 import com.upgrade.challenge.reservation.domain.Reservation;
 import com.upgrade.challenge.reservation.domain.User;
-import com.upgrade.challenge.reservation.exception.UserException;
-import com.upgrade.challenge.reservation.repository.UserRepository;
-import com.upgrade.challenge.reservation.service.UserService;
 import com.upgrade.challenge.reservation.validation.DatePatternConstraint;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.stream.LongStream;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
@@ -43,25 +24,7 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureRestDocs
 public class UserControllerTest extends BaseController {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    private String baseUrl = "http://localhost:";
-    private String endpoint = "/users/save";
-
-    @After
-    public void clearDB() {
-        repository.deleteAll();
-    }
 
     @Test
     public void givenUserWithValidData_whenSaveIsSuccessful_thenAJsonWithUserDataIsRetrieved() throws Exception {
@@ -71,8 +34,7 @@ public class UserControllerTest extends BaseController {
         Reservation reservation = getReservation(start, end, null);
         User user = getUser("Alexander", "The Great", "alexander.magnus@gmail.com", reservation);
 
-        String url = new StringBuilder().append(baseUrl).append(port).append(endpoint).toString();
-        ResponseEntity<String> result = doPost(user, restTemplate, url);
+        ResponseEntity<String> result = doPost(user, SAVE_ENDPOINT);
 
         String json = result.getBody();
         SimpleDateFormat sdf = DatePatternConstraint.DATE_FORMAT;
@@ -98,13 +60,11 @@ public class UserControllerTest extends BaseController {
         Date end = getDate(d1.plusDays(3));
         Reservation reservation = getReservation(start, end, null);
         User user = getUser("Alexander", "The Great", "alexander.magnus@gmail.com", reservation);
-
-        String url = new StringBuilder().append(baseUrl).append(port).append(endpoint).toString();
-        ResponseEntity<String> result1 = doPost(user, restTemplate, url);
+        ResponseEntity<String> result1 = doPost(user, SAVE_ENDPOINT);
 
         //User 2
         User user2 = getUser("Gaivs Ivlivs", "Caesar", "gaivs.caesar@gmail.com", reservation);
-        ResponseEntity<String> result2 = doPost(user2, restTemplate, url);
+        ResponseEntity<String> result2 = doPost(user2, SAVE_ENDPOINT);
 
         String json1 = result1.getBody();
         String json2 = result2.getBody();
@@ -132,8 +92,7 @@ public class UserControllerTest extends BaseController {
         Reservation reservation = getReservation(start, end, null);
         User user = getUser(null, null, "alexander.magnus@gmail.com", reservation);
 
-        StringBuilder url = new StringBuilder().append(baseUrl).append(port).append(endpoint);
-        ResponseEntity<String> result = doPost(user, restTemplate, url.toString());
+        ResponseEntity<String> result = doPost(user, SAVE_ENDPOINT);
         String json = result.getBody();
 
         assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
@@ -151,8 +110,7 @@ public class UserControllerTest extends BaseController {
         Reservation reservation = getReservation(start, null, null);
         User user = getUser("Alexander", "The Great", "alexander.magnus@gmail.com", reservation);
 
-        StringBuilder url = new StringBuilder().append(baseUrl).append(port).append(endpoint);
-        ResponseEntity<String> result = doPost(user, restTemplate, url.toString());
+        ResponseEntity<String> result = doPost(user, SAVE_ENDPOINT);
         String json = result.getBody();
 
         assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
@@ -170,8 +128,7 @@ public class UserControllerTest extends BaseController {
         Reservation reservation = getReservation(start, end, null);
         User user = getUser("Alexander", "The Great", "", reservation);
 
-        StringBuilder url = new StringBuilder().append(baseUrl).append(port).append(endpoint);
-        ResponseEntity<String> result = doPost(user, restTemplate, url.toString());
+        ResponseEntity<String> result = doPost(user, SAVE_ENDPOINT);
         String json = result.getBody();
 
         assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
@@ -185,8 +142,7 @@ public class UserControllerTest extends BaseController {
     public void givenUserWithoutReservation_whenSave_thenAJsonWithErrorDetailsIsRetrieved() throws Exception {
         User user = getUser("Alexander", "The Great", "alexander.magnus@gmail.com", null);
 
-        StringBuilder url = new StringBuilder().append(baseUrl).append(port).append(endpoint);
-        ResponseEntity<String> result = doPost(user, restTemplate, url.toString());
+        ResponseEntity<String> result = doPost(user, SAVE_ENDPOINT);
         String json = result.getBody();
 
         assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
@@ -198,8 +154,7 @@ public class UserControllerTest extends BaseController {
 
     @Test
     public void givenEmptyUser_whenSave_thenAJsonWithErrorDetailsIsRetrieved() throws Exception {
-        StringBuilder url = new StringBuilder().append(baseUrl).append(port).append(endpoint);
-        ResponseEntity<String> result = doPost(new User(), restTemplate, url.toString());
+        ResponseEntity<String> result = doPost(new User(), SAVE_ENDPOINT);
         String json = result.getBody();
 
         assertEquals(HttpStatus.OK.value(), result.getStatusCodeValue());
@@ -211,8 +166,7 @@ public class UserControllerTest extends BaseController {
 
     @Test
     public void givenNullUser_whenSave_thenAJsonWithErrorDetailsIsRetrieved() throws Exception {
-        StringBuilder url = new StringBuilder().append(baseUrl).append(port).append(endpoint);
-        ResponseEntity<String> result = doPost(null, restTemplate, url.toString());
+        ResponseEntity<String> result = doPost(null, SAVE_ENDPOINT);
         String json = result.getBody();
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), result.getStatusCodeValue());
@@ -226,13 +180,6 @@ public class UserControllerTest extends BaseController {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         clientHttpRequestFactory.setConnectTimeout(3000);
         return clientHttpRequestFactory;
-    }
-
-
-    private String getJson(String d1, String d2) {
-        return "{\"email\":\"alexander.magnus@gmail.com\",\"firstName\":\"Alexander\",\"lastName\":\"The Great\",\"reservation\":{\"startDate\":\"" +
-                d1 + "\",\"" +
-                d2 +"\":\"2019-02-21\"}}";
     }
 
 }

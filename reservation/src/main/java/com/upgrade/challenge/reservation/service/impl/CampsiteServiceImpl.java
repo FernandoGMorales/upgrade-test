@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.Future;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,13 +63,10 @@ public class CampsiteServiceImpl implements CampsiteService {
     private List<Range> getRanges(List<Reservation> reservations, Date date1, Date date2) {
         List<Range> ranges = new ArrayList<>();
 
-        //Check range
+        //Check range, otherwise use default range of one month.
         if(!isValidRange(date1, date2)) {
             date1 = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date2);
-            calendar.add(Calendar.DAY_OF_MONTH, DEFAULT_RANGE);
-            date2 = calendar.getTime();
+            date2 = getDate(LocalDate.now().plusMonths(1));
         }
 
         //Step 1: check if startDate of first reserv. is after start date of the range
@@ -91,10 +89,10 @@ public class CampsiteServiceImpl implements CampsiteService {
             }
         }
 
-        //Step 3: check if endDate of last reserv. is before or equals to the end date of the range
+        //Step 3: check if endDate of last reserv. is before the end date of the range
         LocalDate end = LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(reservations.get(reservations.size()-1).getEndDate()));
         LocalDate endRange = getLocalDate(date2);
-        if(end.isBefore(endRange) || end.equals(endRange)) {
+        if(end.isBefore(endRange)) {
             ranges.add(new Range(end.toString(), endRange.toString()));
         }
 
@@ -108,11 +106,20 @@ public class CampsiteServiceImpl implements CampsiteService {
         return LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(cal.getTime()));
     }
 
+    /*
+        Valid ranges:
+        1- start date before end date
+        2- start date after current date
+     */
     private boolean isValidRange(Date date1, Date date2) {
         boolean valid = false;
         int days = -1;
         valid = date1.toInstant().isAfter(new Date().toInstant());
         valid = valid && date2.toInstant().isAfter(date1.toInstant());
         return valid;
+    }
+
+    private Date getDate(LocalDate d1) {
+        return Date.from(d1.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

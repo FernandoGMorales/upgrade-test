@@ -32,13 +32,16 @@ public class ReservationServiceImpl implements ReservationService {
     private UserRepository userRepository;
 
     @Override @Transactional
-    public void cancel(Long id) throws ReservationException {
+    public Reservation cancel(Long id) throws ReservationException {
+        Reservation deleted = null;
         if(id==null) {
             throw new ReservationException(MISSING_RESERVATION_ID);
         }
         try {
-            if(reservationRepository.existsById(id)) {
+            Optional<Reservation> optional = reservationRepository.findById(id);
+            if(optional.isPresent()) {
                 userRepository.deleteByReservationId(id);
+                deleted = optional.get();
             }
             else {
                 throw new ReservationException("There isn't any reservation with id=" + id + ".");
@@ -47,6 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
             LOG.error(WARN_MESSAGE, e);
             throw e;
         }
+        return deleted;
     }
 
     @Override @Transactional
@@ -63,8 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
                 if(list.isEmpty() || (list.size()==1 && list.get(0).equals(user.getReservation()))) {
                     user.getReservation().setStartDate(reservation.getStartDate());
                     user.getReservation().setEndDate(reservation.getEndDate());
-                    userRepository.saveAndFlush(user);
-                    modified = user.getReservation();
+                    modified = userRepository.saveAndFlush(user).getReservation();
                 }
                 else {
                     throw new ReservationException("There exists reservations in that period. Please check availability.");

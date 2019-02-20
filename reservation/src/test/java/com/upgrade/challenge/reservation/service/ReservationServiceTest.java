@@ -54,10 +54,9 @@ public class ReservationServiceTest extends BaseTestCase {
     @Test
     public void givenReservationId_whenCancel_andReservationNotExists_thenAnExceptionIsThrown()
             throws ReservationException, EntityNotFoundException {
-        Long id = 1000l;
+        Long id = (long)(Math.random()*10000);
         exceptionRule.expect(ReservationException.class);
         exceptionRule.expect(hasProperty("msg", equalTo("There isn't any reservation with id=" + id + ".")));
-
         reservationService.cancel(id);
     }
 
