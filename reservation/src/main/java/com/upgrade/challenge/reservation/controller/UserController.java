@@ -21,7 +21,6 @@ import java.util.List;
  * Created by fernando on 10/02/19.
  */
 @RestController
-@Validated
 public class UserController {
 
     @Autowired

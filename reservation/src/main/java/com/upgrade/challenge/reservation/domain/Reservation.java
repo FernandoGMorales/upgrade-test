@@ -9,12 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by fernando on 09/02/19.
  */
 @Entity
-@Validated
 @ReservationConstraint(
         startDate = "startDate",
         endDate = "endDate",
@@ -32,13 +32,11 @@ public class Reservation {
 
     @DatePatternConstraint
     @Future
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(unique=true)
     private Date startDate;
 
     @DatePatternConstraint
     @Future
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(unique=true)
     private Date endDate;
 

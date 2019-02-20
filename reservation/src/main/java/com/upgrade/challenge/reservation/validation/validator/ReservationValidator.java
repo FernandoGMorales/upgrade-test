@@ -46,7 +46,7 @@ public class ReservationValidator implements ConstraintValidator<ReservationCons
         if(date1==null || date2==null)
             return false;
         int days = -1;
-        String beginDate = DatePatternConstraint.DATE_FORMAT.format(DateValidator.adjustDate(date1));
+        String beginDate = DatePatternConstraint.DATE_FORMAT.format(date1);
         try {
             days = (int) ChronoUnit.DAYS.between(LocalDate.now(), LocalDate.parse(beginDate));
         } catch (Exception e) {

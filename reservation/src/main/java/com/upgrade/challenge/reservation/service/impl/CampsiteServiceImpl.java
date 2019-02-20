@@ -105,7 +105,7 @@ public class CampsiteServiceImpl implements CampsiteService {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DAY_OF_MONTH, -1);
-        return LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(DateValidator.adjustDate(cal.getTime())));
+        return LocalDate.parse(DatePatternConstraint.DATE_FORMAT.format(cal.getTime()));
     }
 
     private boolean isValidRange(Date date1, Date date2) {

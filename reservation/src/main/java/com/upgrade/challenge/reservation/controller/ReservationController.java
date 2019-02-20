@@ -17,20 +17,19 @@ import java.util.Date;
  * Created by fernando on 10/02/19.
  */
 @RestController
-@Validated
 public class ReservationController {
 
     @Autowired
     private ReservationService service;
 
     @DeleteMapping("/reservations/cancel/{id}")
-    public void cancel(@PathVariable @Positive Long id)
+    public void cancel(@PathVariable Long id)
             throws ReservationException, EntityNotFoundException {
         service.cancel(id);
     }
 
     @PostMapping("/reservations/modify")
-    public Reservation modify(@RequestBody @Valid Reservation reservation)
+    public Reservation modify(@RequestBody Reservation reservation)
             throws ReservationException, EntityNotFoundException {
         return service.modify(reservation);
     }

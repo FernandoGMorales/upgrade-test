@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@Validated
 public class CampsiteController {
 
     private final static Logger LOG = LoggerFactory.getLogger(CampsiteController.class);
@@ -45,8 +44,8 @@ public class CampsiteController {
 //    }
 
     @GetMapping("/campsite/availability/start/{startRange}/end/{endRange}")
-    public List<Range> findByRange(@PathVariable @DateStringPatternConstraint String startRange,
-                                   @PathVariable @DateStringPatternConstraint String endRange) throws CampsiteException {
+    public List<Range> findByRange(@PathVariable String startRange,
+                                   @PathVariable String endRange) throws CampsiteException {
         Date d1 = null;
         Date d2 = null;
         try {

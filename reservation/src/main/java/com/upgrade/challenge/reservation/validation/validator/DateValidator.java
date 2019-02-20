@@ -37,10 +37,10 @@ public class DateValidator implements ConstraintValidator<DatePatternConstraint,
         return valid;
     }
 
-    public static Date adjustDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.roll(Calendar.DAY_OF_YEAR, 1);
-        return calendar.getTime();
-    }
+//    public static Date adjustDate(Date date) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        calendar.roll(Calendar.DAY_OF_YEAR, 1);
+//        return calendar.getTime();
+//    }
 }
