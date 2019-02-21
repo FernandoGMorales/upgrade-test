@@ -83,28 +83,29 @@
 
 
 
-## DOCKER
-# To run the from a docker image (I asume you have docker-engine and docker-compose):
+# DOCKER
+### To run the from a docker image (I asume you have docker-engine and docker-compose):
 
 _docker run -p 8080:8080 csravgvstvs/upgrade-test:beta1.1_
 
 __That is my private DockerHub repository, here you have the credentials: user: csravgvstvs, pass: 321DockerhuB__
 
-## Go to: http://localhost:8080/
+### Go to: http://localhost:8080/
 
-# At this point the app is running locally as a single container.
+### At this point the app is running locally as a single container.
+
 
 ## In order to scale the app, run in a local cluster:
-# to run the commands below you will ned a file named docker-compose.yml which is located at: reservation/
+### to run the commands below you will ned a file named docker-compose.yml which is located at: reservation/
 
 _docker swarm init_
 
 _docker stack deploy -c docker-compose.yml upgrade-test-1_
 
-# Stop the service
+### Stop the service
 
 _docker stack rm upgrade-test-1_
 
-# Stop swarm
+### Stop swarm
 
 _docker swarm leave --force_
