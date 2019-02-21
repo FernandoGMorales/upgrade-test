@@ -9,10 +9,14 @@ For true scalability the image should be deployed as a service in a cluster like
 Build the app, run tests, install artifacts, from /reservation (root path of the app)
 1) mvn clean install
 
+
 Run the tests only
+
 2) mvn tests
 
+
 Run the app
+
 3) mvn spring-boot:run
 * by default tomcat is at http://localhost:8080
 
