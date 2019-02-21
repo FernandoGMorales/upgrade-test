@@ -1,8 +1,10 @@
 # upgrade-test
 -The app is a Spring boot app
+
 -The DB is H2 (memory DB), I know that DB is mainly for testing purposes, but I've foused on requeriments and constraints.
--In order to provide scalability, the app has been built as Docker image and has been configured to run in a cluster with up to 5 replicas.
-For true scalability the image should be deployed as a service in a cluster like Google cloud, Docker swarm, Amazon AWS, etc.
+
+-In order to provide scalability, the app has been built as Docker image and has been configured to run as a service in a cluster, and scale up to 5 replicas. For true scalability the image should be deployed as a service in a cluster like Google cloud, Docker swarm, Amazon AWS, etc.
+
 -I've decided to add integration tests, altough not required, but it's hard to provide quality without them.
 
 
