@@ -5,11 +5,11 @@
 * I've decided to add integration tests, altough not required, but it's hard to provide quality without them.
 
 
-1. Build the app, run tests, install artifacts, from /reservation (root path of the app)
+1. Build the app, run tests, install artifacts, from /reservation (root path of the app).
 _mvn clean install_
-1. Run the tests only
+1. Run the tests only.
 _mvn tests_
-1. Run the app
+1. Run the app.
 _mvn spring-boot:run_
 * by default tomcat is at http://localhost:8080
 
