@@ -52,10 +52,9 @@ GET /users/all
 
 
 RESERVATION
-	DELETE /reservations/cancel/{id}
-  
-  POST /reservations/modify
-  
+		DELETE /reservations/cancel/{id}    		
+		POST /reservations/modify
+		
  	Example: http://localhost:8080/reservations/modify
 			 {"id": 2,
 			    "startDate": "2019-02-25",
