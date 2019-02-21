@@ -85,8 +85,10 @@ GET /campsite/availability/start/{startRange}/end/{endRange}
 DOCKER
 To run the from a docker image (I asume you have docker-engine and docker-compose):
 1) docker run -p 8080:8080 csravgvstvs/upgrade-test:beta1.1
+
 *** That is my private DockerHub repository, here you have the credentials: user: csravgvstvs, pass: 321DockerhuB
 2) Go to: http://localhost:8080/
+
 ***At this point the app is running locally as a single container.
 
 In order to scale the app, run in a local cluster:
