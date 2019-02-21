@@ -6,9 +6,7 @@ For true scalability the image should be deployed as a service in a cluster like
 -I've decided to add integration tests, altough not required, but it's hard to provide quality without them.
 
 
-The app is in my GithubRepo:
-
-Buil the app, run tests, install artifacts, from /reservation (root path of the app)
+Build the app, run tests, install artifacts, from /reservation (root path of the app)
 1) mvn clean install
 
 Run the tests only
@@ -21,7 +19,7 @@ Run the app
 
 
 
-APP ENDPOINTS (I recomend POSTMAN for DELETE and POST request)
+APP ENDPOINTS (I recommend POSTMAN for DELETE and POST requests)
 
 USER
 	POST /users/save
@@ -58,7 +56,7 @@ RESERVATION
   
   POST /reservations/modify
   
- 	Example: 	
+ 	Example: http://localhost:8080/reservations/modify
 			 {"id": 2,
 			    "startDate": "2019-02-25",
 			    "endDate": "2019-02-26"
@@ -74,6 +72,7 @@ CAMPSITE
 	
   GET /campsite/availability/start/{startRange}/end/{endRange}
 
+	Example: http://localhost:8080/campsite/availability/start/2019-02-25/end/2019-02-26
 
 
 
