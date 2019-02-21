@@ -22,7 +22,8 @@ Run the app
 APP ENDPOINTS (I recommend POSTMAN for DELETE and POST requests)
 
 USER
-	POST /users/save
+
+POST /users/save
   
 	Example: http://localhost:8080/users/save
 			{
@@ -52,8 +53,9 @@ GET /users/all
 
 
 RESERVATION
-		DELETE /reservations/cancel/{id}    		
-		POST /reservations/modify
+
+DELETE /reservations/cancel/{id}    		
+POST /reservations/modify
 		
  	Example: http://localhost:8080/reservations/modify
 			 {"id": 2,
@@ -69,7 +71,7 @@ RESERVATION
 
 CAMPSITE
 	
-  GET /campsite/availability/start/{startRange}/end/{endRange}
+GET /campsite/availability/start/{startRange}/end/{endRange}
 
 	Example: http://localhost:8080/campsite/availability/start/2019-02-25/end/2019-02-26
 
