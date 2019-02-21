@@ -54,7 +54,8 @@ GET /users/all
 
 RESERVATION
 
-DELETE /reservations/cancel/{id}    		
+DELETE /reservations/cancel/{id}    
+
 POST /reservations/modify
 		
  	Example: http://localhost:8080/reservations/modify
