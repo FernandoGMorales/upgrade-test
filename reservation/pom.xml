@@ -11,7 +11,7 @@
 	<groupId>com.upgrade.challenge</groupId>
 	<artifactId>reservation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<!--<packaging>war</packaging>-->
 	<name>reservation</name>
 	<description>Upgrade Back-end Tech Challenge</description>
 
