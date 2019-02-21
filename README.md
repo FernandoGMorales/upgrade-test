@@ -32,6 +32,7 @@ Run the app
 * POST /users/save
   
 	Example: http://localhost:8080/users/save
+	```javascript
 			{
 			  "email": "alexander.magnus@gmail.com",
 			  "firstName": "Alexander",
@@ -41,7 +42,9 @@ Run the app
 			    "endDate": "2019-02-25"
 			  }
 			}
+	```
 	Response: 
+	```javascript
 			{
 			    "email": "alexander.magnus@gmail.com",
 			    "firstName": "Alexander",
@@ -53,7 +56,7 @@ Run the app
 			    }
 			}
 
-
+	```
 
 * GET /users/all
 
@@ -65,16 +68,20 @@ Run the app
 * POST /reservations/modify
 		
  	Example: http://localhost:8080/reservations/modify
+	```javascript
 			 {"id": 2,
 			    "startDate": "2019-02-25",
 			    "endDate": "2019-02-26"
 			  }
+	  ```
 	Response: 
+	```javascript
 			{
 			    "id": 2,
 			    "startDate": "2019-02-25T00:00:00.000+0000",
 			    "endDate": "2019-02-26T00:00:00.000+0000"
 			}
+			```
 
 ### CAMPSITE
 	
