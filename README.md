@@ -4,13 +4,20 @@
 * In order to provide scalability, the app has been built as Docker image and has been configured to run as a service in a cluster, and scale up to 5 replicas. For true scalability the image should be deployed as a service in a cluster like Google cloud, Docker swarm, Amazon AWS, etc.
 * I've decided to add integration tests, altough not required, but it's hard to provide quality without them.
 
+## BUILD, GENERATE ARTIFACTS AND RUN TESTS
 
 1. Build the app, run tests, install artifacts, from /reservation (root path of the app).
+
 _mvn clean install_
+
 1. Run the tests only.
+
 _mvn tests_
+
 1. Run the app.
+
 _mvn spring-boot:run_
+
 * by default tomcat is at http://localhost:8080
 
 
