@@ -6,11 +6,11 @@
 
 
 1. Build the app, run tests, install artifacts, from /reservation (root path of the app)
- mvn clean install
+_mvn clean install_
 1. Run the tests only
- mvn tests
+_mvn tests_
 1. Run the app
-1. mvn spring-boot:run
+_mvn spring-boot:run_
 * by default tomcat is at http://localhost:8080
 
 
