@@ -25,7 +25,7 @@ Run the app
 
 
 
-APP ENDPOINTS (I recommend POSTMAN for DELETE and POST requests)
+### APP ENDPOINTS (I recommend POSTMAN for DELETE and POST requests)
 
 USER
 
@@ -84,7 +84,7 @@ GET /campsite/availability/start/{startRange}/end/{endRange}
 
 
 
-DOCKER
+### DOCKER
 To run the from a docker image (I asume you have docker-engine and docker-compose):
 1) docker run -p 8080:8080 csravgvstvs/upgrade-test:beta1.1
 
