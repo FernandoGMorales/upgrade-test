@@ -1,25 +1,16 @@
 # upgrade-test
--The app is a Spring boot app
-
--The DB is H2 (memory DB), I know that DB is mainly for testing purposes, but I've foused on requeriments and constraints.
-
--In order to provide scalability, the app has been built as Docker image and has been configured to run as a service in a cluster, and scale up to 5 replicas. For true scalability the image should be deployed as a service in a cluster like Google cloud, Docker swarm, Amazon AWS, etc.
-
--I've decided to add integration tests, altough not required, but it's hard to provide quality without them.
+* The app is a Spring boot app
+* The DB is H2 (memory DB), I know that DB is mainly for testing purposes, but I've foused on requeriments and constraints.
+* In order to provide scalability, the app has been built as Docker image and has been configured to run as a service in a cluster, and scale up to 5 replicas. For true scalability the image should be deployed as a service in a cluster like Google cloud, Docker swarm, Amazon AWS, etc.
+* I've decided to add integration tests, altough not required, but it's hard to provide quality without them.
 
 
-Build the app, run tests, install artifacts, from /reservation (root path of the app)
-1) mvn clean install
-
-
-Run the tests only
-
-2) mvn tests
-
-
-Run the app
-
-3) mvn spring-boot:run
+1. Build the app, run tests, install artifacts, from /reservation (root path of the app)
+ mvn clean install
+1. Run the tests only
+ mvn tests
+1. Run the app
+1. mvn spring-boot:run
 * by default tomcat is at http://localhost:8080
 
 
